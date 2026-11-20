@@ -1,0 +1,27 @@
+# Backend
+backend/target/
+backend/src/main/resources/static/
+*.class
+*.log
+.settings/
+.classpath
+.project
+.factorypath
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE et système
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Secrets locaux
+.env
+
+# Archives
+*.zip

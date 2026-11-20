@@ -1,0 +1,52 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+  <ng-container *ngIf="detail">
+    <div class="row">
+      <div class="col-xl-4 mb-4">
+        <div class="card shadow">
+          <div class="card-header"><h3 class="mb-0">{{ detail.entreprise.nom }}</h3></div>
+          <div class="card-body">
+            <p *ngIf="detail.entreprise.secteur"><strong>Secteur :</strong> {{ detail.entreprise.secteur }}</p>
+            <p *ngIf="detail.entreprise.adresse"><strong>Adresse :</strong> {{ detail.entreprise.adresse }}</p>
+            <p *ngIf="detail.entreprise.email"><strong>Email :</strong> {{ detail.entreprise.email }}</p>
+            <p *ngIf="detail.entreprise.tel"><strong>Téléphone :</strong> {{ detail.entreprise.tel }}</p>
+            <p *ngIf="detail.entreprise.siteWeb"><strong>Site web :</strong> {{ detail.entreprise.siteWeb }}</p>
+            <a class="btn btn-sm btn-secondary" [routerLink]="['/entreprises']">Retour</a>
+            <a class="btn btn-sm btn-primary" *ngIf="auth.isAdmin()"
+               [routerLink]="['/entreprises', detail.entreprise.id, 'edit']">Modifier</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8 mb-4">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <div class="row align-items-center">
+              <div class="col"><h3 class="mb-0">Offres de cette entreprise ({{ detail.offres.length }})</h3></div>
+              <div class="col-auto">
+                <a class="btn btn-sm btn-primary" *ngIf="auth.canPublish()" [routerLink]="['/offres/new']"
+                   [queryParams]="{ entrepriseId: detail.entreprise.id }">Nouvelle offre</a>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light"><tr><th>Offre</th><th>Type</th><th>Durée</th><th>Date limite</th><th>Statut</th><th></th></tr></thead>
+              <tbody>
+                <tr *ngFor="let o of detail.offres">
+                  <td>{{ o.libelle }}</td>
+                  <td>{{ o.type }}</td>
+                  <td>{{ o.duree }} mois</td>
+                  <td>{{ o.dateLimite | date: 'dd/MM/yyyy' }}</td>
+                  <td><span class="badge" [ngClass]="badge(o.statut)">{{ o.statut }}</span></td>
+                  <td class="text-right"><a class="btn btn-sm btn-secondary" [routerLink]="['/offres', o.id]">Voir</a></td>
+                </tr>
+                <tr *ngIf="detail.offres.length === 0"><td colspan="6" class="text-muted text-center py-4">Aucune offre</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

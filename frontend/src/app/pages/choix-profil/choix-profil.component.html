@@ -1,0 +1,45 @@
+<div class="header bg-gradient-primary py-7 py-lg-8">
+  <div class="container">
+    <div class="header-body text-center mb-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+          <h1 class="text-white">Bienvenue sur StageTrack</h1>
+          <p class="text-lead text-light">Pour commencer, dis-nous qui tu es.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt--8 pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card shadow border-0 h-100 text-center" style="cursor: pointer" (click)="choisir('ETUDIANT')">
+        <div class="card-body py-5">
+          <div class="icon icon-shape bg-gradient-info text-white rounded-circle shadow mb-3">
+            <i class="ni ni-hat-3"></i>
+          </div>
+          <h3>Je suis étudiant</h3>
+          <p class="text-muted">Je cherche un stage (PFE ou été), je consulte les offres et je postule.</p>
+          <button class="btn btn-primary" type="button" (click)="choisir('ETUDIANT'); $event.stopPropagation()">Continuer</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card shadow border-0 h-100 text-center" style="cursor: pointer" (click)="choisir('COLLABORATEUR')">
+        <div class="card-body py-5">
+          <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow mb-3">
+            <i class="ni ni-briefcase-24"></i>
+          </div>
+          <h3>Je suis recruteur</h3>
+          <p class="text-muted">Je publie des offres de stage et je suis les candidatures reçues.</p>
+          <button class="btn btn-primary" type="button" (click)="choisir('COLLABORATEUR'); $event.stopPropagation()">Continuer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12 text-center">
+      <a [routerLink]="['/login']" class="text-light"><small>J'ai déjà un compte</small></a>
+    </div>
+  </div>
+</div>

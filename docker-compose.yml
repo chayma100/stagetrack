@@ -1,0 +1,24 @@
+# Services de développement : MySQL pour la base, Mailpit pour voir les emails envoyés.
+#   docker compose up -d
+#   MySQL   : localhost:3306  (base stagetrack, utilisateur root, mot de passe root)
+#   Mailpit : interface web http://localhost:8025, SMTP sur le port 1025
+# Avec ces services, lancer le backend avec : DB_PASSWORD=root
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stagetrack
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  mysql-data:

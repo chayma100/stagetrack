@@ -1,0 +1,49 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+  <div class="alert alert-success" *ngIf="success">{{ success }}</div>
+  <div class="row" *ngIf="offre">
+    <div class="col-xl-8 mb-4">
+      <div class="card shadow">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col"><h3 class="mb-0">{{ offre.libelle }}</h3></div>
+            <div class="col-auto"><span class="badge" [ngClass]="badge(offre.statut)">{{ offre.statut }}</span></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>Entreprise :</strong>
+            <a [routerLink]="['/entreprises', offre.entrepriseId]">{{ offre.entrepriseNom }}</a></p>
+          <p><strong>Type :</strong> {{ offre.type === 'PFE' ? "Projet de fin d'études" : "Stage d'été" }}</p>
+          <p><strong>Durée :</strong> {{ offre.duree }} mois</p>
+          <p *ngIf="offre.gratification != null"><strong>Gratification :</strong> {{ offre.gratification }} DT / mois</p>
+          <p *ngIf="offre.dateLimite"><strong>Date limite :</strong> {{ offre.dateLimite | date: 'dd/MM/yyyy' }}</p>
+          <hr>
+          <p style="white-space: pre-line">{{ offre.description || 'Aucune description.' }}</p>
+          <a class="btn btn-sm btn-secondary" [routerLink]="['/offres']">Retour</a>
+          <a class="btn btn-sm btn-primary" *ngIf="auth.isAdmin()" [routerLink]="['/offres', offre.id, 'edit']">Modifier</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 mb-4" *ngIf="auth.canPostuler()">
+      <div class="card shadow">
+        <div class="card-header"><h3 class="mb-0">Postuler</h3></div>
+        <div class="card-body">
+          <ng-container *ngIf="canApply; else closed">
+            <div class="form-group">
+              <label class="form-control-label" for="commentaire">Message (facultatif)</label>
+              <textarea id="commentaire" rows="4" maxlength="1000" class="form-control form-control-alternative"
+                        name="commentaire" [(ngModel)]="commentaire"></textarea>
+            </div>
+            <button class="btn btn-primary" type="button" [disabled]="sending" (click)="postuler()">
+              {{ sending ? 'Envoi…' : 'Envoyer ma candidature' }}
+            </button>
+          </ng-container>
+          <ng-template #closed>
+            <p class="text-muted mb-0">Cette offre n'accepte plus de candidatures.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

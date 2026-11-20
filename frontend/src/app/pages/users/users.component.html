@@ -1,0 +1,58 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0"><h3 class="mb-0">Utilisateurs</h3></div>
+        <div class="alert alert-danger mx-4" *ngIf="error">{{ error }}</div>
+        <div class="alert alert-success mx-4" *ngIf="info">{{ info }}</div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr><th>Nom</th><th>Email</th><th>Téléphone</th><th>Admin</th><th>Collaborateur (recruteur)</th><th>Étudiant</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let r of rows">
+                <td>{{ r.user.prenom }} {{ r.user.nom }}</td>
+                <td>{{ r.user.email }}</td>
+                <td>{{ r.user.tel }}</td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" [id]="'admin' + r.user.id" [name]="'admin' + r.user.id"
+                           [(ngModel)]="r.admin">
+                    <label class="custom-control-label" [for]="'admin' + r.user.id"></label>
+                  </div>
+                </td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" [id]="'collab' + r.user.id" [name]="'collab' + r.user.id"
+                           [(ngModel)]="r.collaborateur">
+                    <label class="custom-control-label" [for]="'collab' + r.user.id"></label>
+                  </div>
+                </td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" [id]="'etu' + r.user.id" [name]="'etu' + r.user.id"
+                           [(ngModel)]="r.etudiant">
+                    <label class="custom-control-label" [for]="'etu' + r.user.id"></label>
+                  </div>
+                </td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-primary" type="button" (click)="saveRoles(r)">Enregistrer les rôles</button>
+                  <button class="btn btn-sm btn-danger" type="button" [disabled]="isMe(r.user)" (click)="remove(r)">Supprimer</button>
+                </td>
+              </tr>
+              <tr *ngIf="!loading && rows.length === 0">
+                <td colspan="7" class="text-muted text-center py-4">Aucun utilisateur</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer py-4 d-flex justify-content-end" *ngIf="total > size">
+          <ngb-pagination [collectionSize]="total" [pageSize]="size" [page]="pageNumber" [maxSize]="5"
+                          [boundaryLinks]="true" (pageChange)="onPage($event)"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

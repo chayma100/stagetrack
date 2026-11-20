@@ -1,0 +1,65 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-8 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <h3 class="mb-0">{{ id ? "Modifier l'entreprise" : 'Nouvelle entreprise' }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+          <form (ngSubmit)="save()" #f="ngForm">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="nom">Nom *</label>
+                  <input id="nom" name="nom" class="form-control form-control-alternative" [(ngModel)]="model.nom" required>
+                  <small class="text-danger" *ngIf="fieldErrors['nom']">{{ fieldErrors['nom'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="secteur">Secteur</label>
+                  <input id="secteur" name="secteur" class="form-control form-control-alternative" [(ngModel)]="model.secteur">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="email">Email</label>
+                  <input id="email" name="email" type="email" class="form-control form-control-alternative" [(ngModel)]="model.email" email>
+                  <small class="text-danger" *ngIf="fieldErrors['email']">{{ fieldErrors['email'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="tel">Téléphone</label>
+                  <input id="tel" name="tel" class="form-control form-control-alternative" [(ngModel)]="model.tel">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="adresse">Adresse</label>
+                  <input id="adresse" name="adresse" class="form-control form-control-alternative" [(ngModel)]="model.adresse">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="siteWeb">Site web</label>
+                  <input id="siteWeb" name="siteWeb" class="form-control form-control-alternative" [(ngModel)]="model.siteWeb">
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid || saving">
+              {{ saving ? 'Enregistrement…' : 'Enregistrer' }}
+            </button>
+            <a class="btn btn-secondary" [routerLink]="['/entreprises']">Annuler</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

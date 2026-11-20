@@ -1,0 +1,66 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-8">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0"><h3 class="mb-0">Mon profil</h3></div>
+        <div class="card-body" *ngIf="user">
+          <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+          <div class="alert alert-success" *ngIf="success">{{ success }}</div>
+          <form (ngSubmit)="save()" #f="ngForm">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label">Email</label>
+                  <input class="form-control form-control-alternative" [value]="user.email" disabled>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label">Rôle(s)</label>
+                  <input class="form-control form-control-alternative" [value]="auth.roleLabels(user.roles)" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="prenom">Prénom *</label>
+                  <input id="prenom" name="prenom" class="form-control form-control-alternative" [(ngModel)]="prenom" required>
+                  <small class="text-danger" *ngIf="fieldErrors['prenom']">{{ fieldErrors['prenom'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="nom">Nom *</label>
+                  <input id="nom" name="nom" class="form-control form-control-alternative" [(ngModel)]="nom" required>
+                  <small class="text-danger" *ngIf="fieldErrors['nom']">{{ fieldErrors['nom'] }}</small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="tel">Téléphone</label>
+                  <input id="tel" name="tel" class="form-control form-control-alternative" [(ngModel)]="tel">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="newPassword">Nouveau mot de passe</label>
+                  <input id="newPassword" name="newPassword" type="password" minlength="6" autocomplete="new-password"
+                         class="form-control form-control-alternative" placeholder="Laisser vide pour ne pas changer"
+                         [(ngModel)]="newPassword">
+                  <small class="text-danger" *ngIf="fieldErrors['newPassword']">{{ fieldErrors['newPassword'] }}</small>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid || saving">
+              {{ saving ? 'Enregistrement…' : 'Enregistrer' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

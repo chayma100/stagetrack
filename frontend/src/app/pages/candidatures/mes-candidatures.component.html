@@ -1,0 +1,30 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0"><h3 class="mb-0">Mes candidatures</h3></div>
+        <div class="alert alert-danger mx-4" *ngIf="error">{{ error }}</div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light"><tr><th>Offre</th><th>Entreprise</th><th>Envoyée le</th><th>Statut</th><th>Message</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let c of candidatures">
+                <td><a [routerLink]="['/offres', c.offreId]">{{ c.offreLibelle }}</a></td>
+                <td>{{ c.entrepriseNom }}</td>
+                <td>{{ c.dateEnvoi | date: 'dd/MM/yyyy' }}</td>
+                <td><span class="badge" [ngClass]="badge(c.statut)">{{ labels[c.statut] }}</span></td>
+                <td>{{ c.commentaire }}</td>
+              </tr>
+              <tr *ngIf="!loading && candidatures.length === 0">
+                <td colspan="5" class="text-muted text-center py-4">
+                  Vous n'avez pas encore postulé. <a [routerLink]="['/offres']">Voir les offres</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

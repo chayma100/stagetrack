@@ -1,0 +1,74 @@
+<div class="header bg-gradient-primary py-7 py-lg-8">
+  <div class="container">
+    <div class="header-body text-center mb-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6">
+          <h1 class="text-white">Créer un compte</h1>
+          <p class="text-lead text-light">Un email est envoyé à l'administrateur à chaque inscription.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt--8 pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+          <form role="form" (ngSubmit)="submit()" #f="ngForm">
+            <div class="alert alert-secondary d-flex justify-content-between align-items-center py-2">
+              <span>Je crée un compte <strong>{{ profilLabel }}</strong></span>
+              <a [routerLink]="['/choix-profil']"><small>Changer</small></a>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-1">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="ni ni-hat-3"></i></span></div>
+                <input class="form-control" placeholder="Nom" type="text" name="nom" [(ngModel)]="model.nom" required>
+              </div>
+              <small class="text-danger" *ngIf="fieldErrors['nom']">{{ fieldErrors['nom'] }}</small>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-1">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="ni ni-hat-3"></i></span></div>
+                <input class="form-control" placeholder="Prénom" type="text" name="prenom" [(ngModel)]="model.prenom" required>
+              </div>
+              <small class="text-danger" *ngIf="fieldErrors['prenom']">{{ fieldErrors['prenom'] }}</small>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-1">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="ni ni-email-83"></i></span></div>
+                <input class="form-control" placeholder="Email" type="email" name="email" [(ngModel)]="model.email" required email>
+              </div>
+              <small class="text-danger" *ngIf="fieldErrors['email']">{{ fieldErrors['email'] }}</small>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-1">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="ni ni-mobile-button"></i></span></div>
+                <input class="form-control" placeholder="Téléphone (facultatif)" type="text" name="tel" [(ngModel)]="model.tel">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-1">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span></div>
+                <input class="form-control" placeholder="Mot de passe (6 caractères minimum)" type="password" name="password"
+                       [(ngModel)]="model.password" required minlength="6">
+              </div>
+              <small class="text-danger" *ngIf="fieldErrors['password']">{{ fieldErrors['password'] }}</small>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary mt-4" [disabled]="f.invalid || loading">
+                {{ loading ? 'Création…' : 'Créer mon compte' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <a [routerLink]="['/login']" class="text-light"><small>J'ai déjà un compte</small></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col-xl-8 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <h3 class="mb-0">{{ id ? "Modifier l'offre" : 'Nouvelle offre' }}</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+          <form (ngSubmit)="save()" #f="ngForm">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="form-group">
+                  <label class="form-control-label" for="libelle">Intitulé *</label>
+                  <input id="libelle" name="libelle" class="form-control form-control-alternative" [(ngModel)]="model.libelle" required>
+                  <small class="text-danger" *ngIf="fieldErrors['libelle']">{{ fieldErrors['libelle'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="type">Type *</label>
+                  <select id="type" name="type" class="form-control form-control-alternative" [(ngModel)]="model.type" required>
+                    <option value="PFE">PFE</option>
+                    <option value="ETE">Stage d'été</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="entrepriseId">Entreprise *</label>
+                  <select id="entrepriseId" name="entrepriseId" class="form-control form-control-alternative"
+                          [(ngModel)]="model.entrepriseId" required>
+                    <option [ngValue]="null" disabled>Choisir une entreprise</option>
+                    <option *ngFor="let e of entreprises" [ngValue]="e.id">{{ e.nom }}</option>
+                  </select>
+                  <small class="text-danger" *ngIf="fieldErrors['entrepriseId']">{{ fieldErrors['entrepriseId'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="statut">Statut</label>
+                  <select id="statut" name="statut" class="form-control form-control-alternative" [(ngModel)]="model.statut">
+                    <option value="OUVERTE">Ouverte</option>
+                    <option value="FERMEE">Fermée</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="duree">Durée (mois) *</label>
+                  <input id="duree" name="duree" type="number" min="1" class="form-control form-control-alternative"
+                         [(ngModel)]="model.duree" required>
+                  <small class="text-danger" *ngIf="fieldErrors['duree']">{{ fieldErrors['duree'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="gratification">Gratification (DT/mois)</label>
+                  <input id="gratification" name="gratification" type="number" min="0" class="form-control form-control-alternative"
+                         [(ngModel)]="model.gratification">
+                  <small class="text-danger" *ngIf="fieldErrors['gratification']">{{ fieldErrors['gratification'] }}</small>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="dateLimite">Date limite</label>
+                  <input id="dateLimite" name="dateLimite" type="date" class="form-control form-control-alternative"
+                         [(ngModel)]="model.dateLimite">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label" for="description">Description</label>
+              <textarea id="description" name="description" rows="5" maxlength="2000"
+                        class="form-control form-control-alternative" [(ngModel)]="model.description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid || saving">
+              {{ saving ? 'Enregistrement…' : 'Enregistrer' }}
+            </button>
+            <a class="btn btn-secondary" [routerLink]="['/offres']">Annuler</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

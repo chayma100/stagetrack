@@ -1,0 +1,53 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col"><h3 class="mb-0">Entreprises partenaires</h3></div>
+            <div class="col-auto">
+              <a class="btn btn-sm btn-primary" *ngIf="auth.canPublish()" [routerLink]="['/entreprises/new']">Nouvelle entreprise</a>
+            </div>
+          </div>
+          <form class="form-inline mt-3" (ngSubmit)="onSearch()">
+            <input class="form-control form-control-sm mr-2" style="min-width: 260px" type="text" name="search"
+                   placeholder="Rechercher (nom, secteur, adresse)" [(ngModel)]="search">
+            <button class="btn btn-sm btn-outline-primary" type="submit">Rechercher</button>
+          </form>
+        </div>
+        <div class="alert alert-danger mx-4" *ngIf="error">{{ error }}</div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr><th>Nom</th><th>Secteur</th><th>Adresse</th><th>Téléphone</th><th>Offres</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let e of entreprises">
+                <td><a [routerLink]="['/entreprises', e.id]"><strong>{{ e.nom }}</strong></a></td>
+                <td>{{ e.secteur }}</td>
+                <td>{{ e.adresse }}</td>
+                <td>{{ e.tel }}</td>
+                <td><span class="badge badge-info">{{ e.nbOffres }}</span></td>
+                <td class="text-right">
+                  <a class="btn btn-sm btn-secondary" [routerLink]="['/entreprises', e.id]">Détail</a>
+                  <ng-container *ngIf="auth.isAdmin()">
+                    <a class="btn btn-sm btn-primary" [routerLink]="['/entreprises', e.id, 'edit']">Modifier</a>
+                    <button class="btn btn-sm btn-danger" type="button" (click)="remove(e)">Supprimer</button>
+                  </ng-container>
+                </td>
+              </tr>
+              <tr *ngIf="!loading && entreprises.length === 0">
+                <td colspan="6" class="text-muted text-center py-4">Aucune entreprise trouvée</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer py-4 d-flex justify-content-end" *ngIf="total > size">
+          <ngb-pagination [collectionSize]="total" [pageSize]="size" [page]="pageNumber" [maxSize]="5"
+                          [boundaryLinks]="true" (pageChange)="onPage($event)"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
