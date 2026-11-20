@@ -5,7 +5,7 @@
 FROM node:18-alpine AS front
 WORKDIR /app
 COPY frontend/package*.json ./
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps --no-audit --no-fund
 COPY frontend/ ./
 RUN npx ng build --configuration production
 
