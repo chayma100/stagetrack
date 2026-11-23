@@ -30,13 +30,15 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-group">
-                  <label class="form-control-label" for="entrepriseId">Entreprise *</label>
-                  <select id="entrepriseId" name="entrepriseId" class="form-control form-control-alternative"
-                          [(ngModel)]="model.entrepriseId" required>
-                    <option [ngValue]="null" disabled>Choisir une entreprise</option>
-                    <option *ngFor="let e of entreprises" [ngValue]="e.id">{{ e.nom }}</option>
-                  </select>
-                  <small class="text-danger" *ngIf="fieldErrors['entrepriseId']">{{ fieldErrors['entrepriseId'] }}</small>
+                  <label class="form-control-label" for="entreprise">Entreprise *</label>
+                  <input id="entreprise" name="entreprise" list="entreprises-list" autocomplete="off" maxlength="150"
+                         class="form-control form-control-alternative" [(ngModel)]="entrepriseSaisie" required
+                         placeholder="Choisir ou saisir un nom">
+                  <datalist id="entreprises-list">
+                    <option *ngFor="let e of entreprises" [value]="e.nom"></option>
+                  </datalist>
+                  <small class="form-text text-muted">Choisissez dans la liste ou saisissez un nouveau nom : l'entreprise sera créée.</small>
+                  <small class="text-danger" *ngIf="fieldErrors['entrepriseNom']">{{ fieldErrors['entrepriseNom'] }}</small>
                 </div>
               </div>
               <div class="col-lg-6">

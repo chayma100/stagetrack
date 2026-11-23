@@ -83,6 +83,7 @@ public class DataInitializer implements CommandLineRunner {
             seedDemoData();
         }
         if (seedDemo) {
+            seedExtraDemoData();
             seedDemoUsers();
         }
     }
@@ -132,6 +133,95 @@ public class DataInitializer implements CommandLineRunner {
         offre(e3, "Stage d'été Développement mobile", TypeStage.ETE, 2, 450.0, today.minusDays(5),
                 "Développement d'écrans pour une application mobile.");
         log.info("Données de démonstration créées (3 entreprises, 5 offres)");
+    }
+
+    /**
+     * Entreprises et offres de démonstration supplémentaires. Chaque entreprise n'est créée que si son
+     * nom n'existe pas déjà : un démarrage répété ne crée pas de doublons.
+     */
+    private void seedExtraDemoData() {
+        LocalDate today = LocalDate.now();
+        int creees = 0;
+
+        Entreprise e = entrepriseSiAbsente("Telnet Holding", "Ingénierie et télécommunications", "Ariana");
+        if (e != null) {
+            offre(e, "PFE Systèmes embarqués et IoT", TypeStage.PFE, 6, 900.0, today.plusDays(35),
+                    "Développement d'un prototype de supervision d'objets connectés.");
+            offre(e, "Stage d'été Test logiciel", TypeStage.ETE, 2, 450.0, today.plusDays(14),
+                    "Rédaction et exécution de scénarios de test sur une application embarquée.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Proxym Group", "Développement logiciel", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Développeur Java Spring Boot", TypeStage.PFE, 6, 1000.0, today.plusDays(40),
+                    "Conception d'une API REST sécurisée avec Spring Boot.");
+            offre(e, "PFE Développeur Angular", TypeStage.PFE, 6, 950.0, today.plusDays(28),
+                    "Réalisation de l'interface d'une plateforme de gestion en Angular.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Sofrecom Tunisie", "Conseil en télécommunications", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Ingénieur Réseaux 5G", TypeStage.PFE, 6, 1100.0, today.plusDays(50),
+                    "Étude et simulation d'une architecture de réseau mobile.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Talan Tunisie", "Conseil et transformation numérique", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Ingénieur Cloud et DevOps", TypeStage.PFE, 6, 1000.0, today.plusDays(25),
+                    "Automatisation du déploiement d'applications conteneurisées.");
+            offre(e, "Stage d'été Développement web", TypeStage.ETE, 2, 500.0, today.plusDays(12),
+                    "Participation au développement d'un site web métier.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Ooredoo Tunisie", "Télécommunications", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Analyse de données clients", TypeStage.PFE, 6, 1000.0, today.plusDays(33),
+                    "Analyse et visualisation de données d'usage.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Tunisie Telecom", "Télécommunications", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Supervision des réseaux", TypeStage.PFE, 5, 800.0, today.plusDays(22),
+                    "Mise en place d'un tableau de bord de supervision réseau.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("BIAT", "Banque", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Business Intelligence", TypeStage.PFE, 6, 1100.0, today.plusDays(42),
+                    "Conception d'un entrepôt de données et de rapports décisionnels.");
+            offre(e, "Stage d'été Cybersécurité", TypeStage.ETE, 2, 600.0, today.plusDays(18),
+                    "Sensibilisation et audit de configuration de postes de travail.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Sopra Banking Software", "Logiciels bancaires", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Ingénieur Logiciel Banque", TypeStage.PFE, 6, 1200.0, today.plusDays(38),
+                    "Développement d'un module de gestion de comptes.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Focus Corporation", "Services numériques", "Tunis");
+        if (e != null) {
+            offre(e, "PFE Développement mobile Flutter", TypeStage.PFE, 5, 850.0, today.plusDays(30),
+                    "Réalisation d'une application mobile multiplateforme.");
+            creees++;
+        }
+        e = entrepriseSiAbsente("Poulina Group Holding", "Industrie et distribution", "Ben Arous");
+        if (e != null) {
+            offre(e, "PFE Système d'information industriel", TypeStage.PFE, 6, 900.0, today.plusDays(27),
+                    "Digitalisation du suivi de production d'une usine.");
+            creees++;
+        }
+        if (creees > 0) {
+            log.info("Données de démonstration supplémentaires créées ({} entreprises)", creees);
+        }
+    }
+
+    /** Crée l'entreprise si son nom n'existe pas encore, sinon retourne null. */
+    private Entreprise entrepriseSiAbsente(String nom, String secteur, String adresse) {
+        if (entrepriseRepository.findFirstByNomIgnoreCase(nom).isPresent()) {
+            return null;
+        }
+        return entreprise(nom, secteur, adresse);
     }
 
     private Entreprise entreprise(String nom, String secteur, String adresse) {

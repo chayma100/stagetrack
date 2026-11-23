@@ -84,7 +84,8 @@ public final class Dtos {
             @NotNull TypeStage type,
             LocalDate dateLimite,
             StatutOffre statut,
-            @NotNull Long entrepriseId) {
+            Long entrepriseId,
+            @Size(max = 150) String entrepriseNom) {
     }
 
     public record OffreDto(

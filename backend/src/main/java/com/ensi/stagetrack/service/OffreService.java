@@ -3,6 +3,7 @@ package com.ensi.stagetrack.service;
 import com.ensi.stagetrack.dto.Dtos.OffreDto;
 import com.ensi.stagetrack.dto.Dtos.OffreRequest;
 import com.ensi.stagetrack.dto.Dtos.PageResponse;
+import com.ensi.stagetrack.exception.BadRequestException;
 import com.ensi.stagetrack.exception.NotFoundException;
 import com.ensi.stagetrack.mapper.Mapper;
 import com.ensi.stagetrack.model.Entreprise;
@@ -81,8 +82,7 @@ public class OffreService {
     }
 
     private void apply(Offre o, OffreRequest r) {
-        Entreprise entreprise = entrepriseRepository.findById(r.entrepriseId())
-                .orElseThrow(() -> new NotFoundException("Entreprise introuvable : " + r.entrepriseId()));
+        Entreprise entreprise = resoudreEntreprise(r);
         o.setLibelle(r.libelle().trim());
         o.setGratification(r.gratification());
         o.setDuree(r.duree());
@@ -91,6 +91,26 @@ public class OffreService {
         o.setDateLimite(r.dateLimite());
         o.setStatut(r.statut() != null ? r.statut() : StatutOffre.OUVERTE);
         o.setEntreprise(entreprise);
+    }
+
+    /**
+     * L'entreprise est donnée par son identifiant, ou par son nom saisi librement :
+     * une entreprise déjà connue est réutilisée, sinon elle est créée.
+     */
+    private Entreprise resoudreEntreprise(OffreRequest r) {
+        if (r.entrepriseId() != null) {
+            return entrepriseRepository.findById(r.entrepriseId())
+                    .orElseThrow(() -> new NotFoundException("Entreprise introuvable : " + r.entrepriseId()));
+        }
+        String nom = r.entrepriseNom() == null ? "" : r.entrepriseNom().trim();
+        if (nom.isEmpty()) {
+            throw new BadRequestException("Choisissez une entreprise ou saisissez son nom");
+        }
+        return entrepriseRepository.findFirstByNomIgnoreCase(nom).orElseGet(() -> {
+            Entreprise nouvelle = new Entreprise();
+            nouvelle.setNom(nom);
+            return entrepriseRepository.save(nouvelle);
+        });
     }
 
     private Specification<Offre> buildSpec(String search, Long entrepriseId, TypeStage type,
