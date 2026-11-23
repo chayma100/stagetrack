@@ -39,6 +39,10 @@ public class Candidature {
     @Column(length = 1000)
     private String commentaire;
 
+    /** Nom du CV joint (le contenu est dans CandidatureCv), null si aucun CV. */
+    @Column(name = "cv_nom", length = 255)
+    private String cvNom;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -80,6 +84,14 @@ public class Candidature {
 
     public void setCommentaire(String commentaire) {
         this.commentaire = commentaire;
+    }
+
+    public String getCvNom() {
+        return cvNom;
+    }
+
+    public void setCvNom(String cvNom) {
+        this.cvNom = cvNom;
     }
 
     public User getUser() {

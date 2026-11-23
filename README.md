@@ -105,6 +105,10 @@ Comptes de démonstration créés au démarrage en profil `dev` :
 
 Les droits sont appliqués côté Spring (`@PreAuthorize`) **et** côté Angular (menus, boutons, `RoleGuard`). Seul le côté Spring est une vraie protection.
 
+## CV joint à la candidature
+
+Lors d'une candidature, l'étudiant peut joindre un CV (PDF, DOC ou DOCX, 5 Mo maximum). Le fichier est stocké en base (table `candidature_cv`). Il peut être téléchargé par l'étudiant auteur, par le recruteur propriétaire de l'offre et par l'admin (`GET /api/candidatures/{id}/cv`). L'envoi se fait en `multipart/form-data` sur `POST /api/offres/{id}/candidatures` (champs `commentaire` et `cv`).
+
 ## 7. Déploiement sur Render
 
 Voir **DEPLOIEMENT.md** (guide pas à pas, `render.yaml` prêt à l'emploi, limites de l'offre gratuite).

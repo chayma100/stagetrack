@@ -67,6 +67,7 @@ export interface Candidature {
   offreId: number;
   offreLibelle: string;
   entrepriseNom: string;
+  cvNom?: string | null;
 }
 
 export interface Page<T> {

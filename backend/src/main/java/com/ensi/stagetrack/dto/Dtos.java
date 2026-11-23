@@ -104,7 +104,7 @@ public final class Dtos {
     public record CandidatureDto(
             Long id, StatutCandidature statut, LocalDate dateEnvoi, String commentaire,
             Long userId, String userNom, String userEmail,
-            Long offreId, String offreLibelle, String entrepriseNom) {
+            Long offreId, String offreLibelle, String entrepriseNom, String cvNom) {
     }
 
     // ---------- Statistiques ----------

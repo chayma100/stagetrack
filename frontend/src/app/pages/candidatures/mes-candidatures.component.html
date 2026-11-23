@@ -7,17 +7,21 @@
         <div class="alert alert-danger mx-4" *ngIf="error">{{ error }}</div>
         <div class="table-responsive">
           <table class="table align-items-center table-flush">
-            <thead class="thead-light"><tr><th>Offre</th><th>Entreprise</th><th>Envoyée le</th><th>Statut</th><th>Message</th></tr></thead>
+            <thead class="thead-light"><tr><th>Offre</th><th>Entreprise</th><th>Envoyée le</th><th>Statut</th><th>CV</th><th>Message</th></tr></thead>
             <tbody>
               <tr *ngFor="let c of candidatures">
                 <td><a [routerLink]="['/offres', c.offreId]">{{ c.offreLibelle }}</a></td>
                 <td>{{ c.entrepriseNom }}</td>
                 <td>{{ c.dateEnvoi | date: 'dd/MM/yyyy' }}</td>
                 <td><span class="badge" [ngClass]="badge(c.statut)">{{ labels[c.statut] }}</span></td>
+                <td>
+                  <a *ngIf="c.cvNom; else noCv" href="javascript:void(0)" (click)="telechargerCv(c)">{{ c.cvNom }}</a>
+                  <ng-template #noCv><span class="text-muted">&mdash;</span></ng-template>
+                </td>
                 <td>{{ c.commentaire }}</td>
               </tr>
               <tr *ngIf="!loading && candidatures.length === 0">
-                <td colspan="5" class="text-muted text-center py-4">
+                <td colspan="6" class="text-muted text-center py-4">
                   Vous n'avez pas encore postulé. <a [routerLink]="['/offres']">Voir les offres</a>
                 </td>
               </tr>

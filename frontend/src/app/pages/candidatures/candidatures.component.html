@@ -22,7 +22,7 @@
         <div class="table-responsive">
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
-              <tr><th>Candidat</th><th>Offre</th><th>Entreprise</th><th>Envoyée le</th><th>Statut</th><th>Changer le statut</th></tr>
+              <tr><th>Candidat</th><th>Offre</th><th>Entreprise</th><th>Envoyée le</th><th>CV</th><th>Statut</th><th>Changer le statut</th></tr>
             </thead>
             <tbody>
               <tr *ngFor="let c of candidatures">
@@ -30,6 +30,10 @@
                 <td><a [routerLink]="['/offres', c.offreId]">{{ c.offreLibelle }}</a></td>
                 <td>{{ c.entrepriseNom }}</td>
                 <td>{{ c.dateEnvoi | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                  <a *ngIf="c.cvNom; else noCv" href="javascript:void(0)" (click)="telechargerCv(c)">Télécharger le CV</a>
+                  <ng-template #noCv><span class="text-muted">Aucun CV</span></ng-template>
+                </td>
                 <td><span class="badge" [ngClass]="badge(c.statut)">{{ labels[c.statut] }}</span></td>
                 <td>
                   <select class="form-control form-control-sm" [ngModel]="c.statut" (ngModelChange)="changeStatut(c, $event)"
@@ -39,7 +43,7 @@
                 </td>
               </tr>
               <tr *ngIf="!loading && candidatures.length === 0">
-                <td colspan="6" class="text-muted text-center py-4">Aucune candidature</td>
+                <td colspan="7" class="text-muted text-center py-4">Aucune candidature</td>
               </tr>
             </tbody>
           </table>

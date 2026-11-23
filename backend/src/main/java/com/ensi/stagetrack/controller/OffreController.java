@@ -14,6 +14,8 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -111,5 +113,16 @@ public class OffreController {
         String commentaire = request == null ? null : request.commentaire();
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(candidatureService.postuler(id, authentication.getName(), commentaire));
+    }
+
+    /** Postuler avec un CV joint (PDF, DOC ou DOCX, 5 Mo maximum) : formulaire multipart. */
+    @PostMapping(value = "/{id}/candidatures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN','ETUDIANT')")
+    public ResponseEntity<CandidatureDto> postulerAvecCv(@PathVariable Long id,
+                                                         @RequestParam(value = "commentaire", required = false) String commentaire,
+                                                         @RequestParam(value = "cv", required = false) MultipartFile cv,
+                                                         Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(candidatureService.postuler(id, authentication.getName(), commentaire, cv));
     }
 }

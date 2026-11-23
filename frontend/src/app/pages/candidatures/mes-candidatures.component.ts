@@ -23,4 +23,11 @@ export class MesCandidaturesComponent implements OnInit {
       error: err => { this.loading = false; this.error = this.api.toApiError(err).message; }
     });
   }
+
+  telechargerCv(c: Candidature): void {
+    this.api.downloadCv(c.id).subscribe({
+      next: blob => this.api.download(blob, c.cvNom || 'cv'),
+      error: err => this.error = this.api.toApiError(err).message
+    });
+  }
 }

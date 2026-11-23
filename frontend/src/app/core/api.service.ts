@@ -50,7 +50,14 @@ export class ApiService {
   deleteOffre(id: number): Observable<void> {
     return this.http.delete<void>(`${this.base}/offres/${id}`);
   }
-  postuler(offreId: number, commentaire: string): Observable<Candidature> {
+  /** Postule à une offre ; le CV (PDF, DOC ou DOCX) est facultatif et envoyé en multipart. */
+  postuler(offreId: number, commentaire: string, cv?: File | null): Observable<Candidature> {
+    if (cv) {
+      const form = new FormData();
+      form.append('commentaire', commentaire || '');
+      form.append('cv', cv, cv.name);
+      return this.http.post<Candidature>(`${this.base}/offres/${offreId}/candidatures`, form);
+    }
     return this.http.post<Candidature>(`${this.base}/offres/${offreId}/candidatures`, { commentaire });
   }
   exportOffres(): Observable<Blob> {
@@ -67,6 +74,9 @@ export class ApiService {
   }
   updateStatutCandidature(id: number, statut: StatutCandidature): Observable<Candidature> {
     return this.http.put<Candidature>(`${this.base}/candidatures/${id}/statut`, { statut });
+  }
+  downloadCv(candidatureId: number): Observable<Blob> {
+    return this.http.get(`${this.base}/candidatures/${candidatureId}/cv`, { responseType: 'blob' });
   }
   exportCandidatures(): Observable<Blob> {
     return this.http.get(`${this.base}/candidatures/export`, { responseType: 'blob' });

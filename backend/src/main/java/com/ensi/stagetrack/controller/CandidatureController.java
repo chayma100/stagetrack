@@ -10,6 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ContentDisposition;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -81,5 +85,19 @@ public class CandidatureController {
         boolean admin = authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
         return service.updateStatut(id, request.statut(), authentication.getName(), admin);
+    }
+
+    /** Télécharge le CV joint à une candidature (admin, auteur ou recruteur propriétaire de l'offre). */
+    @GetMapping("/{id}/cv")
+    public ResponseEntity<byte[]> cv(@PathVariable Long id, Authentication authentication) {
+        boolean admin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        CandidatureService.CvTelechargement fichier = service.cv(id, authentication.getName(), admin);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename(fichier.nom(), StandardCharsets.UTF_8).build().toString())
+                .contentType(MediaType.parseMediaType(fichier.type()))
+                .contentLength(fichier.contenu().length)
+                .body(fichier.contenu());
     }
 }

@@ -42,6 +42,6 @@ public final class Mapper {
         Offre o = c.getOffre();
         return new CandidatureDto(c.getId(), c.getStatut(), c.getDateEnvoi(), c.getCommentaire(),
                 u.getId(), u.getPrenom() + " " + u.getNom(), u.getEmail(),
-                o.getId(), o.getLibelle(), o.getEntreprise().getNom());
+                o.getId(), o.getLibelle(), o.getEntreprise().getNom(), c.getCvNom());
     }
 }
